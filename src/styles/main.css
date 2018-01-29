@@ -22,3 +22,10 @@ ul {
 li {
   list-style: none;
 }
+
+button {
+  border: none;
+}
+button:focus {
+  outline: 0;
+}

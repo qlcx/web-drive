@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import FetchAPI from '../utils/fetchAPI';
 
 const Img = styled.img`width: 9.4rem; margin: 7rem 0 3rem 0`;
-const Warning = styled.span`display: block; font-size: 1.4rem; color: red; margin-top: .8em;`;
+const Warning = styled.span`position: absolute; font-size: 1.4rem; color: red; margin-top: .8em;`;
 const Section = styled.section`
   width: 100vw; height: 100vh;
   display: flex; flex-direction: column;
@@ -61,6 +61,8 @@ export default class Login extends Component {
         console.error(e);
         this.setState({errInfo: '登录失败，请重新输入！'});
       });
+    } else {
+      this.setState({errInfo: '请输入完整信息！'})
     }
   }
 

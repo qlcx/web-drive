@@ -7,9 +7,9 @@ import './styles/normalize.css';
 import Login from './views/Login';
 
 const router = () => (
-  <div>
+  <main>
     <Login />
-  </div>
+  </main>
 );
 
 export default router;

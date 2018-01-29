@@ -9,7 +9,11 @@ let tray = null;
 
 function createWindow () {
   // 创建浏览器窗口。
-  win = new BrowserWindow({width: 320, height: 480, resizable: false, webPreferences: {webSecurity: false}});
+  win = new BrowserWindow({
+    width: 320, height: 480, 
+    resizable: false, 
+    webPreferences: {webSecurity: false}
+  });
 
   // 然后加载应用的 index.html。
   win.loadURL('http://localhost:8080');

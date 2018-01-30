@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import styled from 'styled-components';
 
 import FetchAPI from '../utils/fetchAPI';
+
+// S_XuRfPOCR6q9p4krjb6ut091f2FfF-ZYQIt9ysT
+// qZbAy5S86gWxuKDhVioD_zEO36DqznCgy5gXDsjw
 
 const Img = styled.img`width: 9.4rem; margin: 7rem 0 3rem 0`;
 const Warning = styled.span`position: absolute; font-size: 1.4rem; color: red; margin-top: .8em;`;
@@ -38,55 +42,43 @@ const ALink = styled.a`
   margin-top: 2em;
 `;
 
+@inject(stores => ({
+  accessKey: stores.LoginMobx.accessKey,
+  secretKey: stores.LoginMobx.secretKey,
+  errInfo: stores.LoginMobx.errInfo,
+  loginSta: stores.LoginMobx.loginSta,
+  buckets: stores.LoginMobx.buckets,
+
+  login: stores.LoginMobx.login,
+  setAccessKey: stores.LoginMobx.setAccessKey,
+  setSecretKey: stores.LoginMobx.setSecretKey,
+}))
+@observer
 export default class Login extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {
-      accessKey: '',
-      secretKey: '',
-    };
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const { accessKey, secretKey } = this.state; 
-
-    if (!!accessKey && !!secretKey) {
-      let fetchAPI = new FetchAPI('buckets', accessKey, secretKey);
-      fetchAPI.get().then(res => {
-        console.log(res);
-      }).catch(e => {
-        console.error(e);
-        this.setState({errInfo: '登录失败，请重新输入！'});
-      });
-    } else {
-      this.setState({errInfo: '请输入完整信息！'})
-    }
-  }
-
   render() {
+    const { accessKey, secretKey, errInfo } = this.props;
+    const { setAccessKey, setSecretKey, login } = this.props;
+
     return <Section>
       <Img src={require('../../public/logo.png')} />
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={e => {e.preventDefault(); login();} }>
         <InputDiv>
           <label>AccessKey: </label>
           <input 
             type='text'
-            value={this.state.accessKey} 
+            value={accessKey} 
             placeholder={'请输入accessKey'} 
-            onChange={(e) => this.setState({accessKey: e.target.value})} />
+            onChange={e => setAccessKey(e.target.value)} />
         </InputDiv>
         <InputDiv>
           <label>SecretKey: </label>
           <input 
             type='password'
-            value={this.state.secretKey} 
+            value={secretKey} 
             placeholder={'请输入secretKey'}
-            onChange={(e) => this.setState({secretKey: e.target.value})} />        
+            onChange={e => setSecretKey(e.target.value)} />        
         </InputDiv>
-        <Warning>{this.state.errInfo ? this.state.errInfo : ' '}</Warning>
+        <Warning>{errInfo ? errInfo : ''}</Warning>
         <Button type='submit'>登录</Button>
         <ALink href='#'>忘记密码？</ALink>
       </form>
